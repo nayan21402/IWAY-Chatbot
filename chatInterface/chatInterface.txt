@@ -1,0 +1,29 @@
+# set the base model 
+FROM llama3.1:8b
+
+# Set custom paramter values
+PARAMETER temperature 0
+
+PARAMETER stop <|start_header_id|>
+PARAMETER stop <|end_header_id|>
+PARAMETER stop <|eot_id|>
+PARAMETER stop <|reserved_special_token
+
+# Set the model template
+TEMPLATE """
+{{ if .System }}<|start_header_id|>system<|end_header_id|>
+{{ .System }}<|eot_id|>{{ end }}{{ if .Prompt }}<|start_header_id|>user<|end_header_id|>
+{{ .Prompt }}<|eot_id|>{{ end }}<|start_header_id|>assistant<|end_header_id|>
+{{ .Response }}<|eot_id|>
+"""
+
+# Set the system message
+SYSTEM """
+    Your aim is to assist users with navigating IITD RNI Building. The building has 7 floors.
+    General Information: RNI Building. 6 Floors. Male, Female and Hanicapped Washrooms. Lifts and stairs available ob every floor. Reception on ground floor.
+    Use the given information to help the users. You will be provided with chat history as well. Make sure to answer only if the given context is related to the query. Else politely decline.
+    
+    
+"""
+
+
